@@ -26,8 +26,7 @@ let baseURL = 'https://api.themoviedb.org/3/';
         }
         
         let runSearch = function () {
-            language = document.getElementById("getLanguage").value
-            let url = ''.concat(baseURL, 'movie/popular?api_key=', key, '&language=', language);
+            let url = ''.concat(baseURL, 'movie/popular?api_key=', key,'&language=', language);
             fetch(url)
             .then(result=>result.json())
             .then((data)=>{                
@@ -79,6 +78,46 @@ let baseURL = 'https://api.themoviedb.org/3/';
               i++
               }    
               alert(array)            
+            })
+        }
+        getConfig()
+
+    }
+
+    
+    let getLanguages = function() {
+
+        let getConfig = function () {
+            let url = "".concat(baseURL, 'configuration?api_key=', key); 
+            fetch(url)
+            .then((result)=>{
+                return result.json();
+            })
+            .then((data)=>{
+                baseImageURL = data.images.secure_base_url;
+                configData = data.images;
+                console.log('config:', data);
+                console.log('config fetched');
+                runSearch()
+            })
+            .catch(function(err){
+                alert(err)
+            });
+        }
+        
+        let runSearch = function () {
+            let url = ''.concat(baseURL, 'configuration/languages?api_key=', key,);
+            fetch(url)
+            .then(result=>result.json())
+            .then((data)=>{                
+              var Results = data.length
+              var i = 0
+              while(i<Results) {
+              var what = data[i].iso_639_1
+              array.push(what)
+              i++
+              }    
+              alert(array)         
             })
         }
         getConfig()
